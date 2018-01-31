@@ -1,0 +1,25 @@
+#!/usr/bin/with-contenv bash
+
+# application specific configurations
+[[ ! -f /config/www/akaunting/index.php ]] && (
+
+    echo "Setting up Akaunting at /config/www/akaunting";
+    # create our folders/files
+    mkdir -p \
+        /config/www/akaunting \
+        /config/log/akaunting
+
+    # install akaunting
+    unzip ${AKAUNTING_SRC} -d /config/www/akaunting
+
+    touch /config/log/akaunting/{access,error}_akaunting_log
+
+) || echo "Akaunting Installation found";
+
+# permissions
+chown -R alpine:alpine \
+    /config \
+    /var/tmp/nginx \
+    /config/www/akaunting
+
+echo "Done";

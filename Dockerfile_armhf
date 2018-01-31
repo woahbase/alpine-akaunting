@@ -1,0 +1,35 @@
+ARG ARCH=frommakefile
+ARG DOCKERSRC=frommakefile
+ARG USERNAME=frommakefile
+#
+FROM ${USERNAME}/${DOCKERSRC}:${ARCH}
+#
+ARG PUID=1001
+ARG PGID=1001
+#
+ENV AKAUNTING_SRC=/opt/akaunting/akaunting.zip
+RUN set -xe \
+    && apk add --no-cache --purge -uU \
+        curl \
+        unzip \
+        php7-ctype \
+    	php7-mysqli \
+    	php7-mysqlnd \
+    	php7-openssl \
+    	php7-pdo_mysql \
+    	php7-posix \
+    	php7-session \
+    	php7-tokenizer \
+    	php7-xml \
+    	php7-zip \
+    	php7-zlib \
+    && mkdir -p /opt/akaunting \
+    && VERSION=$(curl -sX GET "https://api.github.com/repos/akaunting/akaunting/releases/latest" \
+        | awk '/tag_name/{print $4;exit}' FS='[""]') \
+    && echo "Akaunting version: ${VERSION}" > /opt/akaunting/version \
+    && curl -o ${AKAUNTING_SRC} -SL "https://github.com/akaunting/akaunting/releases/download/${VERSION}/Akaunting_${VERSION}-Stable.zip" \
+    && rm -rf /var/cache/apk/* /tmp/*
+# add local files
+COPY root/ /
+# ports, volumes etc from php
+# ENTRYPOINT ["/init"]
