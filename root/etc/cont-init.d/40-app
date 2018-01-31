@@ -10,7 +10,7 @@
         /config/log/akaunting
 
     # install akaunting
-    unzip ${AKAUNTING_SRC} -d /config/www/akaunting
+    unzip -q ${AKAUNTING_SRC} -d /config/www/akaunting
 
     touch /config/log/akaunting/{access,error}_akaunting_log
 
