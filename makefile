@@ -42,7 +42,7 @@ OTHERFLAGS := -v /etc/hosts:/etc/hosts:ro -v /etc/localtime:/etc/localtime:ro# -
 PORTFLAGS  := -p 80:80 -p 443:443
 PROXYFLAGS := --build-arg http_proxy=$(http_proxy) --build-arg https_proxy=$(https_proxy) --build-arg no_proxy=$(no_proxy)
 
-RUNFLAGS   := -e PGID=$(PGID) -e PUID=$(PUID) -e WEBADMIN=admin -e PASSWORD=insecurebydefault -c 256 -m 128m#
+RUNFLAGS   := -e PGID=$(PGID) -e PUID=$(PUID) -e WEBADMIN=admin -e PASSWORD=insecurebydefault -c 256 -m 256m#
 
 # -- }}}
 
@@ -92,7 +92,7 @@ stop :
 	docker stop -t 2 docker_$(CNTNAME)
 
 test :
-	docker run --rm -it $(NAMEFLAGS) $(RUNFLAGS) $(PORTFLAGS) $(MOUNTFLAGS) $(OTHERFLAGS) $(IMAGETAG) sh -ec 'nginx -v; php --version; echo "$$(cat /opt/akaunting/version)";'
+	docker run --rm -it $(NAMEFLAGS) $(RUNFLAGS) $(PORTFLAGS) $(MOUNTFLAGS) $(OTHERFLAGS) $(IMAGETAG) sh -ec 'sleep 15; nginx -v; php --version; echo "$$(cat /opt/akaunting/version)";'
 
 # -- }}}
 
