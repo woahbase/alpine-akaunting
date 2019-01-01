@@ -27,8 +27,10 @@ RUN set -xe \
     && mkdir -p /opt/akaunting \
     && VERSION=$(curl -sX GET "https://api.github.com/repos/akaunting/akaunting/releases/latest" \
         | awk '/tag_name/{print $4;exit}' FS='[""]') \
+    && ( [[ -z "${VERSION}" ]] && exit 1 || true ) \
     && echo "Akaunting version: ${VERSION}" > /opt/akaunting/version \
     && curl -o ${AKAUNTING_SRC} -SL "https://github.com/akaunting/akaunting/releases/download/${VERSION}/Akaunting_${VERSION}-Stable.zip" \
+    && unzip -qt ${AKAUNTING_SRC} \
     && rm -rf /var/cache/apk/* /tmp/*
 # add local files
 COPY root/ /
