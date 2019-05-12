@@ -13,6 +13,8 @@ RUN set -xe \
         curl \
         unzip \
         php7-ctype \
+        php7-dom \
+        php7-gd \
     	php7-mysqli \
     	php7-mysqlnd \
     	php7-openssl \
